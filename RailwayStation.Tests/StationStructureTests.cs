@@ -5,19 +5,19 @@ namespace RailwayStation.Tests;
 [TestClass]
 public class StationStructureTests
 {
-    private IStationScheme station;
+    private IStationScheme _station;
 
     [TestInitialize]
     public void Initialize()
     {
-        station = StationHelper.CreateStation();
+        _station = StationHelper.CreateStation();
     }
 
     [TestMethod]
     public void ParkPathsContainsInStationPaths()
     {
-        var parkPaths = station.Parks.SelectMany(park => park.Paths);
-        var intersection = station.Paths.Intersect(parkPaths);
+        var parkPaths = _station.Parks.SelectMany(park => park.Paths);
+        var intersection = _station.Paths.Intersect(parkPaths);
 
         Assert.IsNotNull(intersection);
         Assert.IsTrue(intersection.SequenceEqual(parkPaths));
@@ -26,8 +26,8 @@ public class StationStructureTests
     [TestMethod]
     public void PathSegmentsContainsInStationSegments()
     {
-        var pathSegments = station.Paths.SelectMany(park => park.Segments);
-        var intersection = station.Segments.Intersect(pathSegments);
+        var pathSegments = _station.Paths.SelectMany(park => park.Segments);
+        var intersection = _station.Segments.Intersect(pathSegments);
 
         Assert.IsNotNull(intersection);
         Assert.IsTrue(intersection.SequenceEqual(pathSegments));

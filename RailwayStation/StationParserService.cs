@@ -4,11 +4,11 @@ namespace RailwayStation;
 
 public class StationParserService : IStationParserService
 {
-    private readonly IStationSchemeFactory stationFactory;
+    private readonly IStationSchemeFactory _stationFactory;
 
     public StationParserService(IStationSchemeFactory stationFactory)
     {
-        this.stationFactory = stationFactory;
+        _stationFactory = stationFactory;
     }
 
     //из rawData вытягиваются нужные значения, через factory создаются все необходимые для Station сущности
@@ -18,7 +18,7 @@ public class StationParserService : IStationParserService
         List<IPath> paths = ParsePaths(rawData);
         List<IPark> parks = ParseParks(rawData);
 
-        return stationFactory.CreateStation(pathSegments, paths, parks);
+        return _stationFactory.CreateStation(pathSegments, paths, parks);
     }
 
     //TODO: добавить реализацию

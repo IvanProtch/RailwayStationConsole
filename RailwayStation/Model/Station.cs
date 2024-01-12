@@ -7,7 +7,7 @@ namespace RailwayStation.Model;
 
 public class Station : IStationScheme
 {
-    private AdjacencyGraph<IVertex, Edge<IVertex>> graph = new AdjacencyGraph<IVertex, Edge<IVertex>>();
+    private AdjacencyGraph<IVertex, Edge<IVertex>> _graph = new AdjacencyGraph<IVertex, Edge<IVertex>>();
 
     public List<IPathSegment> Segments { get; private set; }
 
@@ -28,10 +28,10 @@ public class Station : IStationScheme
     {
         foreach (var segment in Segments)
         {
-            graph.AddVertex(segment.Start);
-            graph.AddVertex(segment.End);
+            _graph.AddVertex(segment.Start);
+            _graph.AddVertex(segment.End);
 
-            graph.AddEdge(new Edge<IVertex>(segment.Start, segment.End));
+            _graph.AddEdge(new Edge<IVertex>(segment.Start, segment.End));
         }
     }
 
@@ -48,7 +48,7 @@ public class Station : IStationScheme
     /// <exception cref="InvalidOperationException"></exception>
     private List<IPathSegment> FindShortestPathSegments(IVertex startPoint, IVertex endPoint)
     {
-        var paths = graph.ShortestPathsDijkstra(edge => DistanceBetweenPoints(edge.Source.Point, edge.Target.Point), startPoint);
+        var paths = _graph.ShortestPathsDijkstra(edge => DistanceBetweenPoints(edge.Source.Point, edge.Target.Point), startPoint);
         
         paths(endPoint, out var path);
 
