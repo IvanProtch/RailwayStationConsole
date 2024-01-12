@@ -35,4 +35,6 @@ public class FindShortestPathSegmentsTests
 
         station.FindShortestPath(startSegment, endSegment);
     }
+    
+    //TODO: добавить кейс для выбора кратчайшего пути из нескольких возможных
 }
