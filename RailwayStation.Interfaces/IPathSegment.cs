@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace RailwayStation.Interfaces;
+﻿namespace RailwayStation.Interfaces;
 
 public interface IPathSegment
 {

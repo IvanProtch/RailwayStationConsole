@@ -1,5 +1,4 @@
-﻿
-namespace RailwayStation.Interfaces;
+﻿namespace RailwayStation.Interfaces;
 
 public interface IStationScheme
 {
