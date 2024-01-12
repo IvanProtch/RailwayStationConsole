@@ -1,11 +1,10 @@
 ﻿using System.Drawing;
 
-namespace RailwayStation.Interfaces
+namespace RailwayStation.Interfaces;
+
+public interface IPark
 {
-    public interface IPark
-    {
-        string Name { get; }
-        List<IPath> Paths { get; }
-        PointF[] Area { get; }
-    }
+    string Name { get; }
+    List<IPath> Paths { get; }
+    PointF[] Area { get; }
 }

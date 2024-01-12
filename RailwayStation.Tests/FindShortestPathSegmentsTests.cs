@@ -1,5 +1,4 @@
 using RailwayStation.Interfaces;
-using RailwayStation.Model;
 
 namespace RailwayStation.Tests;
 

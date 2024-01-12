@@ -1,8 +1,7 @@
 ﻿
-namespace RailwayStation.Interfaces
+namespace RailwayStation.Interfaces;
+
+public interface IStationParserService
 {
-    public interface IStationParserService
-    {
-        IStationScheme GetStation(string rawData);
-    }
+    IStationScheme GetStation(string rawData);
 }

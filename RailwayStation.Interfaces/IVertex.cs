@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
-namespace RailwayStation.Interfaces
+namespace RailwayStation.Interfaces;
+
+public interface IVertex
 {
-    public interface IVertex
-    {
-        PointF Point { get; }
-    }
+    PointF Point { get; }
 }

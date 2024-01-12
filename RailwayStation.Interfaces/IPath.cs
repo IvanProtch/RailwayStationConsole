@@ -1,9 +1,8 @@
-﻿namespace RailwayStation.Interfaces
+﻿namespace RailwayStation.Interfaces;
+
+public interface IPath
 {
-    public interface IPath
-    {
-        List<IPathSegment> Segments { get; }
-        IPathSegment StartSegment { get; }
-        IPathSegment EndSegment { get; }
-    }
+    List<IPathSegment> Segments { get; }
+    IPathSegment StartSegment { get; }
+    IPathSegment EndSegment { get; }
 }
