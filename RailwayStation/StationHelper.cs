@@ -42,8 +42,8 @@ public static class StationHelper
         segments.Add(segmentHI);
 
         IPath path1 = new Path("Path 1", new List<IPathSegment> { segmentAB, segmentBC, segmentCD }, segmentAB, segmentCD);
-        IPath path2 = new Path("Path 2", new List<IPathSegment> { segmentEF, segmentFG }, segmentEF, segmentFG);
-        IPath path3 = new Path("Path 3", new List<IPathSegment> { segmentHI }, segmentHI, segmentHI);
+        IPath path2 = new Path("Path 2", new List<IPathSegment> { segmentEF, segmentFG });
+        IPath path3 = new Path("Path 3", new List<IPathSegment> { segmentHI });
 
         paths.Add(path1);
         paths.Add(path2);
