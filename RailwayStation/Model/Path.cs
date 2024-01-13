@@ -12,12 +12,21 @@ public class Path : IPath
 
     public IPathSegment EndSegment { get; private set; }
 
-    public Path(string name, List<IPathSegment> segments, IPathSegment start, IPathSegment end)
+    public Path(string name, List<IPathSegment> segments, IPathSegment start = null, IPathSegment end = null)
     {
-        Name = name;
-        Segments = segments;
-        StartSegment = start;
-        EndSegment = end;
+        Name = !string.IsNullOrWhiteSpace(name) ? name : throw new ArgumentException(nameof(name));
+        Segments = segments ?? throw new ArgumentNullException(nameof(segments));
+
+        if (segments.Any())
+        {
+            StartSegment = start ?? segments.First();
+            EndSegment = end ?? segments.Last();
+        }
+        else
+        {
+            StartSegment = start;
+            EndSegment = end;
+        }
     }
 
     public override string ToString() => Name;

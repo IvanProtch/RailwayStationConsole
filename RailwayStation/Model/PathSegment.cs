@@ -2,28 +2,20 @@
 
 namespace RailwayStation.Model;
 
-public class PathSegment : IPathSegment, IEquatable<PathSegment>
+public class PathSegment : IPathSegment
 {
-    public int Number { get; private set; }
-
-    public string Name { get; private set; }
-
-    public IVertex Start { get; private set; }
-
-    public IVertex End { get; private set; }
+    public int Number { get; }
+    public string Name { get; }
+    public IVertex Start { get; }
+    public IVertex End { get; }
 
     public PathSegment(string name, int number, IVertex startPoint, IVertex endPoint)
     {
-        Name = name;
+        Name = !string.IsNullOrWhiteSpace(name) ? name : throw new ArgumentException(nameof(name));
         Number = number;
-        End = endPoint;
-        Start = startPoint;
+        End = endPoint ?? throw new ArgumentNullException(nameof(endPoint));
+        Start = startPoint ?? throw new ArgumentNullException(nameof(startPoint));
     }
 
     public override string ToString() => $"{Number}.{Name}";
-
-    public bool Equals(PathSegment? other)
-    {
-        return other != null && other.Number == Number && other.Name == Name;
-    }
 }

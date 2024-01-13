@@ -8,23 +8,31 @@ namespace RailwayStation.Model;
 public class Station : IStationScheme
 {
     private AdjacencyGraph<IVertex, Edge<IVertex>> _graph = new AdjacencyGraph<IVertex, Edge<IVertex>>();
+    private Dictionary<(IVertex, IVertex), IPathSegment> _segmentsDictionary;
 
     public List<IPathSegment> Segments { get; private set; }
-
     public List<IPath> Paths { get; private set; }
-
     public List<IPark> Parks { get; private set; }
 
     public Station(List<IPathSegment> pathSegments, List<IPath> paths, List<IPark> parks)
     {
-        Segments = pathSegments;
-        Paths = paths;
-        Parks = parks;
+        Segments = pathSegments ?? throw new ArgumentNullException(nameof(pathSegments));
+        Paths = paths ?? throw new ArgumentNullException(nameof(paths));
+        Parks = parks ?? throw new ArgumentNullException(nameof(parks));
 
-        BuildSegmentsGraph();
+        Initialize();
     }
 
-    private void BuildSegmentsGraph()
+    private void Initialize()
+    {
+        _graph = new AdjacencyGraph<IVertex, Edge<IVertex>>();
+        _segmentsDictionary = new Dictionary<(IVertex, IVertex), IPathSegment>();
+
+        InitSegmentsGraph();
+        InitSegmentDictionary();
+    }
+
+    private void InitSegmentsGraph()
     {
         foreach (var segment in Segments)
         {
@@ -35,32 +43,32 @@ public class Station : IStationScheme
         }
     }
 
+    private void InitSegmentDictionary() => _segmentsDictionary = Segments.ToDictionary(segment => (segment.Start, segment.End));
+
     /// <summary>
     /// Найти кратчайший путь между сегментами
     /// </summary>
     /// <returns></returns>
-    public List<IPathSegment> FindShortestPath(IPathSegment startSegment, IPathSegment endSegment) =>
-        FindShortestPathSegments(startSegment.Start, endSegment.End);
-
-    /// <summary>
-    /// Найти кратчайший путь между вершинами
-    /// </summary>
-    /// <exception cref="InvalidOperationException"></exception>
-    private List<IPathSegment> FindShortestPathSegments(IVertex startPoint, IVertex endPoint)
+    public List<IPathSegment> FindShortestPath(IPathSegment startSegment, IPathSegment endSegment)
     {
+        var startPoint = startSegment.Start;
+        var endPoint = endSegment.End;
+
+        if (!_graph.ContainsVertex(startPoint) || !_graph.ContainsVertex(endPoint))
+            throw new InvalidOperationException("Начальная или конечная точка не найдена в графе.");
+
         var paths = _graph.ShortestPathsDijkstra(edge => DistanceBetweenPoints(edge.Source.Point, edge.Target.Point), startPoint);
-        
-        paths(endPoint, out var path);
 
-        if (path == null)
-            throw new InvalidOperationException("No path found between the specified path segments.");
+        paths(endPoint, out var graphShortedPath);
 
-        var shortestPath = path
-            .Select(edge =>
-                Segments.FirstOrDefault(seg => seg.Start.Equals(edge.Source) && seg.End.Equals(edge.Target)))
+        if (graphShortedPath == null || graphShortedPath.Count() == 0)
+            throw new InvalidOperationException($"Путь между участками {startSegment} и {endSegment} не найден.");
+
+        var shortestPathBetweenSegments = graphShortedPath
+            .Select(edge => _segmentsDictionary[(edge.Source, edge.Target)])
             .ToList();
 
-        return shortestPath;
+        return shortestPathBetweenSegments;
     }
 
     private float DistanceBetweenPoints(PointF point1, PointF point2)

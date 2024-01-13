@@ -10,6 +10,8 @@ public class FindShortestPathSegmentsTests
     [TestInitialize]
     public void Initialize()
     {
+        //Для простоты берем IStationScheme из хелпера
+        //в реальном проекте использовался бы Mock
         _station = StationHelper.CreateStation();
     }
 

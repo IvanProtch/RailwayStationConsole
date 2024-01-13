@@ -1,54 +1,43 @@
 ﻿using RailwayStation.Interfaces;
 using System.Drawing;
 
-namespace RailwayStation.Model;
-
-public class Park : IPark
+namespace RailwayStation.Model
 {
-    public string Name { get; private set; }
-
-    public List<IPath> Paths { get; private set; } = new List<IPath>();
-
-    public Park(string name, List<IPath> paths)
+    public class Park : IPark
     {
-        Name = name;
-        Paths = paths;
-    }
+        public string Name { get; private set; }
+        public List<IPath> Paths { get; private set; } = new List<IPath>();
+        private Lazy<PointF[]> _area;
 
-    private PointF[] _area;
-
-    /// <summary>
-    /// Фигура, ограничивающая область парка
-    /// </summary>
-    public PointF[] Area 
-    { 
-        get
+        public Park(string name, List<IPath> paths)
         {
-            if(_area == null)
-                _area = GetArea().ToArray();
+            Name = !string.IsNullOrWhiteSpace(name) ? name : throw new ArgumentNullException(nameof(name));
+            Paths = paths ?? throw new ArgumentNullException(nameof(paths));
 
-            return _area;
-        }
-    }
-
-    private IEnumerable<PointF> GetArea()
-    {
-        foreach (var path in Paths)
-        {
-            yield return path.StartSegment.Start.Point;
+            _area = new Lazy<PointF[]>(() => GetArea().ToArray());
         }
 
-        foreach (var path in Paths)
+        public PointF[] Area => _area.Value;
+
+        private IEnumerable<PointF> GetArea()
         {
-            yield return path.EndSegment.End.Point;
+            foreach (var path in Paths)
+            {
+                yield return path.StartSegment.Start.Point;
+            }
+
+            foreach (var path in Paths)
+            {
+                yield return path.EndSegment.End.Point;
+            }
         }
-    }
 
-    public override string ToString()
-    {
-        if(Paths.Count == 1) return $"{Name}: [{Paths.First()}]";
+        public override string ToString()
+        {
+            if (Paths.Count == 1)
+                return $"{Name}: [{Paths.First()}]";
 
-        string pathsString = string.Join(", ", Paths.Select(path => path));
-        return $"{Name}: [{pathsString}]";
+            return $"{Name}: [{string.Join(", ", Paths)}]";
+        }
     }
 }
