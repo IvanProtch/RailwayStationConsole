@@ -11,12 +11,6 @@ public class StationParserService : IStationParserService
         _stationFactory = stationFactory ?? throw new ArgumentNullException(nameof(stationFactory));
     }
 
-    /// <summary>
-    /// Получить схему станции из исходных данных
-    /// </summary>
-    /// <param name="rawData">Исходные данные (возможен любой формат, но для примера возьмем string)</param>
-    /// <returns>IStationScheme</returns>
-    /// <exception cref="ArgumentNullException"></exception>
     public IStationScheme GetStation(string rawData)
     {
         if (rawData == null) throw new ArgumentNullException(nameof(rawData));

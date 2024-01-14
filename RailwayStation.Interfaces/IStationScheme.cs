@@ -6,5 +6,9 @@ public interface IStationScheme
     List<IPath> Paths { get; }
     List<IPark> Parks { get; }
 
+    /// <summary>
+    /// Найти кратчайший путь между сегментами
+    /// </summary>
+    /// <returns></returns>
     List<IPathSegment> FindShortestPath(IPathSegment startSegment, IPathSegment endSegment);
 }

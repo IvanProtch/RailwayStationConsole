@@ -45,10 +45,6 @@ public class Station : IStationScheme
 
     private void InitSegmentDictionary() => _segmentsDictionary = Segments.ToDictionary(segment => (segment.Start, segment.End));
 
-    /// <summary>
-    /// Найти кратчайший путь между сегментами
-    /// </summary>
-    /// <returns></returns>
     public List<IPathSegment> FindShortestPath(IPathSegment startSegment, IPathSegment endSegment)
     {
         var startPoint = startSegment.Start;
